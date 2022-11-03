@@ -24,8 +24,7 @@ class Card:
     def __eq__(self, other):
         if isinstance(other, Card):
             return (self.suit, self.rank) == (other.suit, other.rank)
-        else:
-            return False
+        return False
 
 class Deck:
     """
@@ -88,20 +87,21 @@ class Hand:
             stack += [self.cards.pop()]
         return stack
 
-    def send(self, other_hand, suit=None, rank=None):
-        """ Send cards with matching suit and/or rank to 'otherHand' """
+    def give_to(self, other_hand, suit=None, rank=None):
+        """ Give cards with matching suit and/or rank to 'otherHand' """
 
         card = Card(suit,rank)
 
-        def get_cards(type):
+        def get_cards(mode):
             matching = []
-            for c in self.cards:
-                if type =='rank':
-                    if card.rank == c.rank:
-                        matching += self.cards.pop(self.cards.index(c))
-                elif type == 'suit':
-                    if card.suit == c.suit:
-                        matching += self.cards.pop(self.cards.index(c))
+            for hand_card in self.cards:
+                hci = self.cards.index(hand_card) # Hand Card Index
+                if mode =='rank':
+                    if card.rank == hand_card.rank:
+                        matching += [self.cards.pop(hci)]
+                elif mode == 'suit':
+                    if card.suit == hand_card.suit:
+                        matching += [self.cards.pop(hci)]
                 else:
                     print("Error, suit or rank not specified")
             return matching
@@ -113,13 +113,16 @@ class Hand:
         if not suit:
             # If no suit given, check hand for cards matching 'rank'
             other_hand.cards += get_cards('rank')
+            return
 
         if not rank:
             # If no rank given, check hand for cards matching 'suit'
             other_hand.cards += get_cards('suit')
-        
+            return
+ 
         # Rank and Suit given, send card from hand
         other_hand.cards += self.cards.pop(self.cards.index(card))
+        return
 
     def check_for(self, suit=None, rank=None):
         """ Return true if 'card' found in hand"""

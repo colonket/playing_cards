@@ -12,16 +12,23 @@ def main():
     #demo_check_for()
 
 def demo_go_fish():
-    """Demo Game of Go Fish"""
+    """Demo of Go Fish Mechanics"""
     deck = playing_cards.Deck()
     alondra = playing_cards.Hand()
     benny = playing_cards.Hand()
 
     deck.shuffle()
-    alondra.draw(deck, 7)
-    benny.draw(deck, 7)
+    alondra.draw(deck, 14)
+    benny.draw(deck, 14)
 
-    benny.send(alondra,rank=2)
+    # Benny gives Alondra all their 2's
+    benny.give_to(alondra,rank=2)
+
+    # Benny gives Alondra all their club's
+    benny.give_to(alondra,suit="CLUBS")
+
+    print("A:",alondra)
+    print("B:",benny)
 
 def demo_str_vs_repr():
     """
