@@ -7,11 +7,13 @@ Author: Eric Iniguez @colonket
 """
 import random
 
+
 class Card:
     """
     A playing card
     """
-    def __init__(self,suit,rank):
+
+    def __init__(self, suit, rank):
         self.suit = str(suit).upper()
         self.rank = str(rank).upper()
 
@@ -20,26 +22,30 @@ class Card:
 
     def __repr__(self):
         return f"Card('{self.suit}','{self.rank}')"
-    
+
     def __eq__(self, other):
         if isinstance(other, Card):
             return (self.suit, self.rank) == (other.suit, other.rank)
         return False
 
+
 class Deck:
     """
     A deck of 52 playing cards
     """
-    def __init__(self,cards=None):
-        self.suits = ["Spades","Diamonds","Hearts","Clubs"] 
-        self.ranks = ["Ace",2,3,4,5,6,7,8,9,10,"Jack","Queen","King"]
+
+    def __init__(self, cards=None):
+        self.suits = ["Spades", "Diamonds", "Hearts", "Clubs"]
+        self.ranks = ["Ace", 2, 3, 4, 5, 6, 7,
+                      8, 9, 10, "Jack", "Queen", "King"]
         if cards:
             self.cards = cards
         else:
-            self.cards = [ Card(s,r) for s in self.suits for r in self.ranks ]
+            self.cards = [Card(s, r) for s in self.suits for r in self.ranks]
 
     def __str__(self):
-        return f"\N{package} {len(self.cards)} cards, "+str([ f"{card.rank} of {card.suit}" for card in self.cards ])
+        return f"\N{package} {len(self.cards)} cards, "+\
+            str([f"{card.rank} of {card.suit}" for card in self.cards])
 
     def __repr__(self):
         return f"Deck({self.cards})"
@@ -63,15 +69,18 @@ class Deck:
                 break
         return stack
 
+
 class Hand:
     """
     A hand to draw and store playing cards
     """
+
     def __init__(self):
         self.cards = []
 
     def __str__(self):
-        return f"\N{raised hand} {len(self.cards)} cards, "+str([ f"{card.rank} of {card.suit}" for card in self.cards ])
+        return f"\N{raised hand} {len(self.cards)} cards, "+\
+            str([f"{card.rank} of {card.suit}" for card in self.cards])
 
     def __repr__(self):
         return f"Hand({self.cards})"
@@ -90,13 +99,13 @@ class Hand:
     def give_to(self, other_hand, suit=None, rank=None):
         """ Give cards with matching suit and/or rank to 'otherHand' """
 
-        card = Card(suit,rank)
+        card = Card(suit, rank)
 
         def get_cards(mode):
             matching = []
             for hand_card in self.cards:
-                hci = self.cards.index(hand_card) # Hand Card Index
-                if mode =='rank':
+                hci = self.cards.index(hand_card)  # Hand Card Index
+                if mode == 'rank':
                     if card.rank == hand_card.rank:
                         matching += [self.cards.pop(hci)]
                 elif mode == 'suit':
@@ -119,14 +128,14 @@ class Hand:
             # If no rank given, check hand for cards matching 'suit'
             other_hand.cards += get_cards('suit')
             return
- 
+
         # Rank and Suit given, send card from hand
         other_hand.cards += self.cards.pop(self.cards.index(card))
         return
 
     def check_for(self, suit=None, rank=None):
         """ Return true if 'card' found in hand"""
-        card = Card(suit,rank)
+        card = Card(suit, rank)
 
         if (not suit) and (not rank):
             print("Error: No suit or rank given")
@@ -135,18 +144,18 @@ class Hand:
         if not suit:
             # If no suit given, check hand for cards matching 'rank'
             rank_in_hand = False
-            for c in self.cards:
-                if card.rank == c.rank:
+            for hand_card in self.cards:
+                if card.rank == hand_card.rank:
                     rank_in_hand = True
             return rank_in_hand
 
         if not rank:
             # If no rank given, check hand for cards matching 'suit'
             suit_in_hand = False
-            for c in self.cards:
-                if card.suit == c.suit:
+            for hand_card in self.cards:
+                if card.suit == hand_card.suit:
                     suit_in_hand = True
             return suit_in_hand
-        
+
         # Rank and Suit given, check hand for card
         return card in self.cards
