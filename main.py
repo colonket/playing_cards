@@ -7,8 +7,21 @@ import playing_cards
 
 def main():
     """Main Method"""
+    demo_go_fish()
+    #demo_str_vs_repr()
     #demo_check_for()
-    demo_str_vs_repr()
+
+def demo_go_fish():
+    """Demo Game of Go Fish"""
+    deck = playing_cards.Deck()
+    alondra = playing_cards.Hand()
+    benny = playing_cards.Hand()
+
+    deck.shuffle()
+    alondra.draw(deck, 7)
+    benny.draw(deck, 7)
+
+    benny.send(alondra,rank=2)
 
 def demo_str_vs_repr():
     """
@@ -33,7 +46,6 @@ def demo_str_vs_repr():
     print()
     print("Alondra REPR FORM")
     print(repr(alondra))
-
 
 def demo_check_for():
     """Demonstrates the Hand class's check_for method"""

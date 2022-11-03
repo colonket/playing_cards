@@ -88,6 +88,39 @@ class Hand:
             stack += [self.cards.pop()]
         return stack
 
+    def send(self, other_hand, suit=None, rank=None):
+        """ Send cards with matching suit and/or rank to 'otherHand' """
+
+        card = Card(suit,rank)
+
+        def get_cards(type):
+            matching = []
+            for c in self.cards:
+                if type =='rank':
+                    if card.rank == c.rank:
+                        matching += self.cards.pop(self.cards.index(c))
+                elif type == 'suit':
+                    if card.suit == c.suit:
+                        matching += self.cards.pop(self.cards.index(c))
+                else:
+                    print("Error, suit or rank not specified")
+            return matching
+
+        if (not suit) and (not rank):
+            print("Error: No suit or rank given")
+            return False
+
+        if not suit:
+            # If no suit given, check hand for cards matching 'rank'
+            other_hand.cards += get_cards('rank')
+
+        if not rank:
+            # If no rank given, check hand for cards matching 'suit'
+            other_hand.cards += get_cards('suit')
+        
+        # Rank and Suit given, send card from hand
+        other_hand.cards += self.cards.pop(self.cards.index(card))
+
     def check_for(self, suit=None, rank=None):
         """ Return true if 'card' found in hand"""
         card = Card(suit,rank)
